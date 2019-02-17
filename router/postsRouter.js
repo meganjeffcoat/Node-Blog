@@ -52,6 +52,21 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ message: 'Error deleting this post'});
     }
 })
+//update post by id
+router.put('/:id', async (req, res) => {
+    try {
+        const { text } = await Posts.update(req.body);
+        const { id } = await Posts.update(req.params.id);
+        if (!text || !user_id){
+            res.status(400).json({ message: 'Please provide both text and user ID to update this post'});
+        } else {
+            const updatedPost = await Posts.insert(req.body);
+            res.status(200).json(updatedPost);
+        }
+    } catch {
+        res.status(500).json({ message: 'Error updating this post'})
+    }
+})
 
 module.exports = router;
 
