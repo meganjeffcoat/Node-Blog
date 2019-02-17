@@ -25,6 +25,23 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ message: 'The user information could not be retrieved'})
     }
 })
+//GET posts from userID
+router.get('/posts/:userId', (req, res) => {
+    const { userId } = req.params;
+    Users
+        .getUserPosts(userId)
+        .then(userPosts => {
+            if (userPosts === 0){
+                res.status(404).json({ message: "No posts from this user could be found "});
+            } else {
+                res.status(200).json(userPosts);
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: "Error retrieving the posts "})
+        });
+})
+
 //Add user
 router.post('/', async (req, res) => {
     try {
