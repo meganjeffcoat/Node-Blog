@@ -25,6 +25,20 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ message: 'The post information could not be retrieved'})
     }
 })
+//add post
+router.post('/', async (req, res) => {
+    try {
+        const { text, user_id } = req.body;
+        if (!text || !user_id){
+            res.status(400).json({ message: 'Please enter both post text and username to continue'})
+        } else {
+            const newPost = await Posts.insert(req.body);
+            res.status(201).json(newPost);
+        }
+    } catch {
+        res.status(500).json({ message: 'The post could nto be added'})
+    }
+})
 
 module.exports = router;
 
