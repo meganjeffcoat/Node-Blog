@@ -43,7 +43,7 @@ router.get('/posts/:userId', (req, res) => {
 })
 
 //Add user
-router.post('/', async (req, res) => {
+router.post('/', upperCase(), async (req, res) => {
     try {
         const { name } = req.body;
         if (!name){
@@ -70,7 +70,7 @@ router.delete('/:id', async (req, res) => {
     }
 })
 //Update user by id
-router.put('/:id', async (req, res) => {
+router.put('/:id', upperCase(), async (req, res) => {
     try {
         const { username } = await Users.update(req.body);
         const { id } = await Users.update(req.params.id);
@@ -84,5 +84,12 @@ router.put('/:id', async (req, res) => {
         res.status(500).json({ message: 'Error updating this user'});
     }
 })
+
+function upperCase(name){
+    return function(req, res, next){
+        req.body.name = req.body.name.toUpperCase();
+        next();
+    }
+}
 
 module.exports = router;
