@@ -39,5 +39,18 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'The user could not be added to our database'})
     }
 })
+//Delete user by id
+router.delete('/:id', async (req, res) => {
+    try {
+        const count = await Users.remove(req.params.id);
+        if (count > 0){
+            res.status(200).json({ message: 'User successfully removed'});
+        } else {
+            res.status(404).json({ message: 'The user with the requested ID does not exist'})
+        }
+    } catch {
+        res.status(500).json({ message: 'Error deleting this user'});
+    }
+})
 
 module.exports = router;
